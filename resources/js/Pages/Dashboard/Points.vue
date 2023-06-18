@@ -77,7 +77,7 @@
                                 </form-group>
                                 <form-group>
                                     <GoogleMap ref="map"
-                                               :center="form.geo" api-key="AIzaSyCCY2mJFkxwEP6_0D9FXjEwZTl6PNnvkfM"
+                                               :center="form.geo" api-key="AIzaSyC0_AC0vJLbsCJ8XVkVc_a4JdDSwC0gQkc"
                                                v-bind="mapOptions"
                                                @click="changeGeo"
                                     >
