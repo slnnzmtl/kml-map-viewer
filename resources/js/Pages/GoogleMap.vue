@@ -125,7 +125,7 @@ export default {
     },
     data: function () {
         return {
-            apiKey: 'AIzaSyCCY2mJFkxwEP6_0D9FXjEwZTl6PNnvkfM',
+            apiKey: 'AIzaSyC0_AC0vJLbsCJ8XVkVc_a4JdDSwC0gQkc',
             markerOptions: {anchorPoint: 'CENTER'},
             mapOptions: {
                 mapTypeId: "hybrid",
