@@ -1,0 +1,3 @@
+<template>
+    <b>🌲</b>
+</template>
