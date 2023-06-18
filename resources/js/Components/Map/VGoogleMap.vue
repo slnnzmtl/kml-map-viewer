@@ -35,7 +35,7 @@ export default {
         center: {}
     },
     data: () => ({
-        apiKey: 'AIzaSyDezJbfeP1zB4Lj6KQA5uxBn1EjvSNQXJs',
+        apiKey: 'AIzaSyC0_AC0vJLbsCJ8XVkVc_a4JdDSwC0gQkc',
         bounds: null
     }),
     computed: {
