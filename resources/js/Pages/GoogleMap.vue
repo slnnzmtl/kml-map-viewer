@@ -3,10 +3,10 @@
 
     <map-guest-layout>
         <template #header>
-            <div class="bg-white flex w-full justify-between py-2 px-4">
+            <div class="flex w-full justify-between py-2 px-4">
                 <div class="flex gap-4 w-max">
-                    <button @click="$inertia.get('/')" class="whitespace-nowrap">На головну</button>
-                    <button @click="$inertia.get(`/list/${activeForestry.id}`)">
+                    <button @click="$inertia.get('/')" class="whitespace-nowrap bg-white rounded p-2">На головну</button>
+                    <button class="bg-white rounded p-2" @click="$inertia.get(`/list/${activeForestry.id}`)">
                         Список
                     </button>
                 </div>                
