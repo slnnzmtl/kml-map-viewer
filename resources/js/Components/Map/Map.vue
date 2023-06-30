@@ -1,20 +1,10 @@
 <template>
     <div class="w-2/3 m-auto flex justify-center">
-        <MapSvg />
+        <MapSVG />
     </div>
     <div v-if="showPanel"
          :style="panelPositionStyle"
-         class="fixed w-auto max-w-[300px] bg-gray-100 shadow-md rounded pt-8" tabindex="0">
-        <button
-            class="bg-white top-[5px] right-[5px] absolute rounded-md inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-300"
-            type="button"
-            @click="showPanel = false">
-            <span class="sr-only">Close menu</span>
-            <svg aria-hidden="true" class="h-6 w-6" fill="none" stroke="currentColor"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-        </button>
+         class="fixed w-auto max-w-[300px] bg-gray-100 shadow-md rounded" tabindex="0">
         <ul class="list-outside hover:list-inside">
             <template v-if="forestry.length">
                 <template v-if="filteredForestry.length">
@@ -31,12 +21,12 @@
 </template>
 
 <script>
-import MapSvg from './MapSvg.vue';
+import MapSVG from './MapSVG.vue';
 
 export default {
     name: "Map",
     components: {
-        MapSvg,
+        MapSVG,
     },
     data: () => ({
         panelCoordinate: {},
@@ -122,6 +112,7 @@ path {
     fill: #0b6822;
     fill-rule: nonzero;
     position: relative;
+    transition: fill 0.1s ease-in-out;
 }
 
 g.active > path {
