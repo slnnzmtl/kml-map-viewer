@@ -2,7 +2,8 @@
     <Head title="Головна сторінка"/>
 
     <map-guest-layout>
-        <map-s-v-g :affiliates="affiliates"/>
+        <Map :affiliates="affiliates" />
+        <Logo class="absolute bottom-4 left-4 w-64" />
     </map-guest-layout>
 </template>
 
@@ -10,14 +11,16 @@
 import {Head} from '@inertiajs/vue3';
 
 import MapGuestLayout from "@/Layouts/MapGuestLayout.vue";
-import MapSVG from "@/Components/Map/MapSVG.vue";
+import Map from "@/Components/Map/Map.vue";
+import Logo from '@/Components/Logo.vue';
 
 export default {
     name: "Home",
     components: {
         Head,
-        MapSVG,
+        Map,
         MapGuestLayout,
+        Logo
     },
     props: {
         auth: {},
@@ -33,6 +36,3 @@ export default {
     }
 }
 </script>
-<style>
-
-</style>
