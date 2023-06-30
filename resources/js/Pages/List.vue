@@ -3,52 +3,53 @@
 
     <map-guest-layout>
         <template #header>
-            <div class="min-w-[250px]">
-                <multiselect v-model="localActiveAffiliate" :can-clear="false" :close-on-deselect="false"
-                             :close-on-select="false"
-                             :hide-selected="false"
-                             :options="notEmptyAffiliates" :show-options="true" class="affiliate" mode="single"
-                             value-prop="id">
+            <div class="flex w-full justify-between px-4 py-2 min-h-[42px] box-content">
+                <div class="flex gap-4">
+                    <button @click="$inertia.get('/')">На головну</button>
+                    <button @click="$inertia.get(`/map/${activeForestry.id}`)">
+                        Карта
+                    </button>
+                </div>
+                <div class="min-w-[250px]">
+                    <multiselect v-model="localActiveAffiliate" :can-clear="false" :close-on-deselect="false"
+                                :close-on-select="false"
+                                :hide-selected="false"
+                                :options="notEmptyAffiliates" :show-options="true" class="affiliate" mode="single"
+                                value-prop="id">
 
 
-                    <template #multiplelabel="{values}">
-                        <div class="p-2 mr-auto">
-                            Вибрано - {{ values }}
-                        </div>
-                    </template>
+                        <template #multiplelabel="{values}">
+                            <div class="p-2 mr-auto">
+                                Вибрано - {{ values }}
+                            </div>
+                        </template>
 
-                    <template #singlelabel>
-                        <div class="mr-auto p-2">{{ activeAffiliate.title }} - {{ activeForestry.title }}</div>
-                    </template>
+                        <template #singlelabel>
+                            <div class="mr-auto p-2">{{ activeAffiliate.title }} - {{ activeForestry.title }}</div>
+                        </template>
 
-                    <template #option="{option:affiliate, isSelected}">
-                        <div class="relative w-full ">
-                            <span>{{ affiliate.title }}</span>
+                        <template #option="{option:affiliate, isSelected}">
+                            <div class="relative w-full ">
+                                <span>{{ affiliate.title }}</span>
 
-                            <template v-if="isSelected(affiliate)">
-                                <div class="absolute left-full top-0 bg-white rounded overflow-hidden text-black"
-                                     style="min-width: 200px">
-                                    <ul>
-                                        <li v-for="forestry in affiliate.forestry" :key="forestry.id"
-                                            :class="{'bg-gray-200 pointer-events-none': localActiveForestry === forestry.id, 'pointer-events-none': forestry.id === activeForestry.id}"
-                                            :value="forestry.id"
-                                            class="p-3"
-                                            @click="goToForestry(forestry.id)">
-                                            {{ forestry.title }}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </template>
-                        </div>
-                    </template>
-                </multiselect>
-            </div>
-
-
-            <div class="absolute top-0 mx-auto w-[50px] left-0 right-0 text-center">
-                <button class="shadow-md p-3 bg-white rounded-b" @click="$inertia.get(`/map/${activeForestry.id}`)">
-                    Карта
-                </button>
+                                <template v-if="isSelected(affiliate)">
+                                    <div class="absolute left-full top-0 bg-white rounded overflow-hidden text-black"
+                                        style="min-width: 200px">
+                                        <ul>
+                                            <li v-for="forestry in affiliate.forestry" :key="forestry.id"
+                                                :class="{'bg-gray-200 pointer-events-none': localActiveForestry === forestry.id, 'pointer-events-none': forestry.id === activeForestry.id}"
+                                                :value="forestry.id"
+                                                class="p-3"
+                                                @click="goToForestry(forestry.id)">
+                                                {{ forestry.title }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </multiselect>
+                </div>
             </div>
         </template>
         <main class=" overflow-y-auto w-full">
