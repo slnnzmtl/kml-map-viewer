@@ -1,6 +1,6 @@
 <template>
     <div class="card-item flex flex-col">
-        <div class="card-item-img">
+        <div v-if="point.media" class="card-item-img">
             <carousel ref="slider" :autoplay="2000" :mouse-drag="true" :touch-drag="true" :wrap-around="true"
                       @init="$refs.slider.restartCarousel()">
                 <slide v-for="img in point.media" :key="img.id" class="min-h-[180px]">
@@ -11,7 +11,7 @@
         </div>
         <div class="card-body flex flex-col grow">
             <h3 class="card-title mb-4">{{ point.title }}</h3>
-            <p class="card-text mb-6">{{ point.description || '' }}</p>
+            <p class="card-text mb-6 whitespace-pre-wrap">{{ point.description || '' }}</p>
             <div class="flex flex-wrap gap-4 justify-start mt-3">
 
                 <a v-if="point.online_cam_link"
