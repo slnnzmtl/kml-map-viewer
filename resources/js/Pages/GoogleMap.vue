@@ -212,7 +212,6 @@ export default {
             this.kmlLayerIsActive = !this.kmlLayerIsActive
         },
         openKmlWindow(props) {
-            console.log(props)
             const { name, description } = props.featureData;
             this.kmlLayerInfo = {
                 position: {
@@ -220,8 +219,8 @@ export default {
                     lng: props.latLng.lng(),
                 },
                 point: {
-                    title: 'test',
-                    description: 'test',
+                    title: name,
+                    description: description,
                 },
             }
         },
@@ -246,8 +245,7 @@ export default {
         },
         uploadKmlFile() {
             const { api, map } = this.$refs.map;
-            // const slug = this.activeAffiliate.code
-            const slug = 'test3'
+            const slug = this.activeAffiliate.code
 
             const kml = new api.KmlLayer(`http://dashboard.polisky.com.ua:8787/${slug}.kml`, {
                 map,
@@ -256,7 +254,6 @@ export default {
             })
 
             kml.addListener("click", this.openKmlWindow)
-            console.log(kml)
             map.kml = kml; 
         },
         goToForestry(id) {
