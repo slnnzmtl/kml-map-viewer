@@ -463,3 +463,7 @@
   </g>
 </svg>
 </template>
+
+<style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text&display=swap');
+</style>
