@@ -9,12 +9,18 @@
             </carousel>
         </div>
         <div class="card-body">
-            <h3 class="card-title mb-4">{{ point.title }}</h3>
+            <h3 class="card-title mb-4">{{ point.title || 'No title' }}</h3>
             <p class="card-text mb-6" :class="{ expanded }">
-                <span>{{ description }}</span>
+                <span>{{ description || 'No description' }}</span>
                 <br>
-                <button v-if="!expanded" class="font-semibold" @click="expanded = true">Розгорнути повністю</button>
             </p>
+            <button
+                v-if="!expanded && description.length > descriptionPreviewLength"
+                class="font-semibold"
+                @click="expanded = true"
+            >
+                Розгорнути повністю
+            </button>
             <div class="flex flex-wrap gap-4 justify-start mt-3">
                 <a v-if="point.online_cam_link"
                 :href="point.online_cam_link"
@@ -60,9 +66,11 @@ export default {
         description() {
             const { description } = this.point
 
-            if (this.expanded || description < this.descriptionPreviewLength) return description
+            return description
 
-            return description.slice(0, this.descriptionPreviewLength) + '...'
+            // if (this.expanded || description < this.descriptionPreviewLength) return description
+
+            // return description.slice(0, this.descriptionPreviewLength) + '...'
         }
     }
 }
@@ -93,6 +101,10 @@ export default {
     margin: auto;
 }
 
+.card-body {
+    padding: 0 12px;
+}
+
 .card-title {
     font-size: 20px;
     font-weight: bolder;
@@ -100,22 +112,28 @@ export default {
 	margin-bottom: 8px;
     margin-top: 16px;
     flex-grow: 1;
-    padding: 0 12px;
 }
 
 .card-text {
-    overflow-y: auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 10;
     flex-grow: 1;
     margin: 0;
     font-size: 16px;
     line-height: 26px;
-    padding: 0 12px;
     transition: all 0.5s ease-in-out;
     max-height: 260px;
+    
 }
 
 .card-text.expanded {
     max-height: 1000px;
+
+
+    -webkit-line-clamp: 1000;
 }
 
 .card-item-buttons {
