@@ -264,10 +264,8 @@ export default {
 
             const layers = this.kmlList.map((path) => {
                 const url = import.meta.env.VITE_APP_URL + path
-                const kml = new api.KmlLayer({ url, map, suppressInfoWindows: true })
+                const kml = new api.KmlLayer({ url, map })
 
-                // TODO: implement info window representing kml data
-                kml.addListener('click', (event) => {})
                 kml.addListener('status_changed', () => {
                     const status = kml.getStatus()
 
