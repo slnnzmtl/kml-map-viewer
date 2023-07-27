@@ -11,7 +11,7 @@
                     </button>
                 </div>                
                 <div class="flex gap-4 w-max">
-                    <grid-button @click="toggleKmlLayer" :isActive="kmlLayerIsActive" />
+                    <grid-button v-show="showKmlButton" @onClick="toggleKmlLayer" :isActive="kmlLayerIsActive" :isLoading="kmlLayerIsLoading" />
                     <multiselect 
                         v-model="localActiveAffiliate" :can-clear="false" :close-on-deselect="false"
                         :close-on-select="false"
@@ -158,9 +158,12 @@ export default {
             isLoaded: false,
             activeMarker: null,
             kmlLayerIsActive: false,
+            kmlLayerIsLoading: false,
             kmlLayerInfo: {
                 featureData: {},
             },
+            kmlLoadedCounter: 0,
+            showKmlButton: false,
         }
     },
     props: {
@@ -168,7 +171,8 @@ export default {
         activeForestry: {},
         affiliates: {},
         points: {},
-        categories: {}
+        categories: {},
+        kmlList: [],
     },
     computed: {
         filteredPoints() {
@@ -201,18 +205,26 @@ export default {
     mounted() {
         setTimeout(() => {
             this.fitBounds()
-            this.uploadKmlFile()
         }, 500)
+
+        if (this.kmlList.length > 0) {
+            this.showKmlButton = true
+        }
     },
     methods: {
         openInfoWindow(marker) {
             this.activeMarker = marker
         },
-        toggleKmlLayer() {
-            this.kmlLayerIsActive = !this.kmlLayerIsActive
+        async toggleKmlLayer() {
+            if (!this.$refs.map.kmlLayers?.length) {
+                await this.uploadKmlFile();
+                this.kmlLayerIsActive = true
+            } else {
+                this.kmlLayerIsActive = !this.kmlLayerIsActive 
+            }
         },
         openKmlWindow(props) {
-            const { name, description } = props.featureData;
+            const { name = '', description = '' } = props.featureData;
             this.kmlLayerInfo = {
                 position: {
                     lat: props.latLng.lat(),
@@ -221,6 +233,7 @@ export default {
                 point: {
                     title: name,
                     description: description,
+                    media: []
                 },
             }
         },
@@ -244,17 +257,32 @@ export default {
 
         },
         uploadKmlFile() {
-            const { api, map } = this.$refs.map;
-            const slug = this.activeAffiliate.code
+            const { api, map } = this.$refs.map
 
-            const kml = new api.KmlLayer(`http://dashboard.polisky.com.ua:8787/${slug}.kml`, {
-                map,
-                suppressInfoWindows: true,
-                preserveViewport: false,
+            this.kmlLayerIsLoading = true
+            this.$refs.map.kmlLayers = []
+
+            const layers = this.kmlList.map((path) => {
+                const url = import.meta.env.VITE_APP_URL + path
+                const kml = new api.KmlLayer({ url, map })
+
+                kml.addListener('status_changed', () => {
+                    const status = kml.getStatus()
+
+                    this.kmlLoadedCounter++
+
+                    if (this.kmlLoadedCounter === layers.length) {
+                        this.kmlLayerIsLoading = false
+                    } 
+
+                    if (status !== 'OK') {
+                        console.error(`${status} ${url}`)
+                    }
+                })
+
+                return kml
             })
-
-            kml.addListener("click", this.openKmlWindow)
-            map.kml = kml; 
+            this.$refs.map.kmlLayers = layers
         },
         goToForestry(id) {
             if (id !== this.activeForestry.id)
@@ -266,13 +294,14 @@ export default {
             this.fitBounds()
         },
         kmlLayerIsActive(value) {
-            const map = this.$refs.map.map
+            const { map, kmlLayers } = this.$refs.map
             if (value) {
-                map.kml.setMap(this.$refs.map.map)
+                kmlLayers?.forEach((layer) => layer.setMap(map))
             } else {
-                map.kml.setMap(null)
+                kmlLayers.forEach((layer) => layer.setMap(null))
+                this.kmlLayerInfo = {}
             }
-        }
+        },
     }
 }
 </script>

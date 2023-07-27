@@ -28,15 +28,25 @@ class HomeController extends Controller
         $points = Point::where('forestry_id', $forestry->id)->with(['category', 'category.image'])->get();
         $affiliates = Affiliate::with('forestry')->get();
         $categories = PointCategory::all();
+        $path = 'public/KML/' . $forestry->id;
+        $files = Storage::files($path);
+        $filenames = [];
 
+        for ($i = 0; $i < count($files); $i++) {
+            $file = $files[$i];
+            $pathinfo = pathinfo($file, PATHINFO_EXTENSION);
+            if ($pathinfo === ltrim('.kml', '.') || $pathinfo === ltrim('.kmz', '.')) {
+                $filenames[] = 'KML/' . $forestry->id  . '/' . basename($file);
+            }
+        }
 
         return Inertia::render('GoogleMap', [
             'activeAffiliate' => $forestry->affiliate,
             'activeForestry' => $forestry,
-//            'forestry' => $forestry,
             'points' => $points,
             'affiliates' => $affiliates,
-            'categories' => $categories
+            'categories' => $categories,
+            'kmlList' => $filenames,
         ]);
 
     }
@@ -57,13 +67,15 @@ class HomeController extends Controller
         ]);
     }
 
-    public function file(Request $request): StreamedResponse
+    public function file(Request $request)
     {
-        return Storage::download('public/' . $request->get('file'), 'test.kml', [
-                'Content-Type' => 'application/vnd.google-earth.kml+xml',
-//                'Charset' => 'utf-8'
-            ]
-        );
+        $forestry = $request->get('forestry');
+        $path = 'public/KML/' . $forestry;
+        $files = Storage::files($path);
+
+        dump($files);
+
+        return response()->json($files);
     }
 }
 
