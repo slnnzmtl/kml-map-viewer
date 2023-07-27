@@ -49,7 +49,7 @@
                                     <select
                                         v-model="activeAffiliateId"
                                         class="block appearance-none w-full border-2 border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                        <option v-for="affiliate in notEmptyAffiliates" :key="affiliate.id"
+                                        <option v-for="affiliate in affiliates" :key="affiliate.id"
                                                 :selected="affiliate.id === activeAffiliateId"
                                                 :value="affiliate.id">
                                             {{ affiliate.title }}
@@ -221,9 +221,6 @@ export default {
         affiliates: {}
     },
     computed: {
-        notEmptyAffiliates() {
-            return this.affiliates.filter(a => a.forestry.length)
-        },
         textCenter: {
             get() {
                 return `${this.form.geo.lat}, ${this.form.geo.lng}`
