@@ -13,7 +13,6 @@
             <p class="card-text mb-6" :class="{ expanded }">
                 <span>{{ point.description || 'No description' }}</span>
                 <br>
-                <button v-if="!expanded" class="font-semibold" @click="expanded = true">Розгорнути повністю</button>
             </p>
             <div class="flex flex-wrap gap-4 justify-start mt-3">
                 <a v-if="point.online_cam_link"
