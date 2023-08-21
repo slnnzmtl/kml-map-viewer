@@ -3,24 +3,18 @@
         <div class="card-item-img">
             <carousel :itemsToScroll="point.media.length > 1 ? 1 : 0" ref="slider" :autoplay="2000" :mouse-drag="true" :touch-drag="true" :wrap-around="true"
                     @init="$refs.slider.restartCarousel()">
-                <slide v-for="img in point.media" :key="img.id" class="min-h-[180px]">
+                <slide v-for="img in point.media" :key="img.id" class="min-h-[180px]"> 
                     <img :src="img.original_url" alt="" class="min-h-[180px]">
                 </slide>
             </carousel>
         </div>
         <div class="card-body">
-            <h3 class="card-title mb-4">{{ point.title || 'No title' }}</h3>
+            <h3 class="card-title mb-4">{{ point.title }}</h3>
             <p class="card-text mb-6" :class="{ expanded }">
-                <span>{{ description || 'No description' }}</span>
+                <span>{{ point.description || 'No description' }}</span>
                 <br>
+                <button v-if="!expanded" class="font-semibold" @click="expanded = true">Розгорнути повністю</button>
             </p>
-            <button
-                v-if="!expanded && description.length > descriptionPreviewLength"
-                class="font-semibold"
-                @click="expanded = true"
-            >
-                Розгорнути повністю
-            </button>
             <div class="flex flex-wrap gap-4 justify-start mt-3">
                 <a v-if="point.online_cam_link"
                 :href="point.online_cam_link"
@@ -62,17 +56,6 @@ export default {
             this.$refs.slider.restartCarousel()
         })
     },
-    computed: {
-        description() {
-            const { description } = this.point
-
-            return description
-
-            // if (this.expanded || description < this.descriptionPreviewLength) return description
-
-            // return description.slice(0, this.descriptionPreviewLength) + '...'
-        }
-    }
 }
 </script>
 
@@ -85,13 +68,10 @@ export default {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: min-content;
 }
 
 .card-item-img {
-    width: 100%;
     overflow: hidden;
-    position: relative;
     max-height: 350px;
 }
 
@@ -99,10 +79,7 @@ export default {
     min-width: 100%;
     border-radius: 8px 8px 0 0;
     margin: auto;
-}
-
-.card-body {
-    padding: 0 12px;
+    min-height: 100%;
 }
 
 .card-title {
@@ -112,28 +89,20 @@ export default {
 	margin-bottom: 8px;
     margin-top: 16px;
     flex-grow: 1;
+    padding: 0 12px;
 }
 
 .card-text {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 10;
     flex-grow: 1;
     margin: 0;
     font-size: 16px;
     line-height: 26px;
-    transition: all 0.5s ease-in-out;
-    max-height: 260px;
-    
-}
-
-.card-text.expanded {
-    max-height: 1000px;
-
-
-    -webkit-line-clamp: 1000;
+    overflow: auto;
+    max-height: 410px;
+    padding: 0 12px;
 }
 
 .card-item-buttons {

@@ -13,7 +13,8 @@
                 <div class="flex gap-4 w-max">
                     <grid-button v-show="showKmlButton" @onClick="toggleKmlLayer" :isActive="kmlLayerIsActive" :isLoading="kmlLayerIsLoading" />
                     <multiselect 
-                        v-model="localActiveAffiliate" :can-clear="false" :close-on-deselect="false"
+                        v-model="localActiveAffiliate" :can-clear="false" :close-on-deselect="false" 
+                        :canDeselect="false"
                         :close-on-select="false"
                         :hide-selected="false"
                         :options="notEmptyAffiliates" :show-options="true" class="affiliate" mode="single"
@@ -315,5 +316,9 @@ export default {
 .affiliate .multiselect-dropdown {
     overflow: initial;
     max-height: initial;
+}
+
+.multiselect-wrapper {
+    min-width: 250px !important;
 }
 </style>

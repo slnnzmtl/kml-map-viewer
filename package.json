@@ -20,6 +20,11 @@
         "@headlessui/vue": "^1.7.12",
         "@heroicons/vue": "^2.0.17",
         "@vueform/multiselect": "^2.6.2",
+        "jquery": "^3.7.0",
+        "leaflet": "^1.9.4",
+        "mapbox-gl": "^2.15.0",
+        "mapbox-gl-leaflet": "^0.0.16",
+        "vue-mapbox": "^0.4.1",
         "vue3-carousel": "^0.3.1",
         "vue3-google-map": "^0.15.0"
     }

@@ -28,7 +28,7 @@ class HomeController extends Controller
         $points = Point::where('forestry_id', $forestry->id)->with(['category', 'category.image'])->get();
         $affiliates = Affiliate::with('forestry')->get();
         $categories = PointCategory::all();
-        $path = 'public/KML/' . $forestry->id;
+        $path = 'public/kml-data/' . $forestry->id;
         $files = Storage::files($path);
         $filenames = [];
 
@@ -36,7 +36,7 @@ class HomeController extends Controller
             $file = $files[$i];
             $pathinfo = pathinfo($file, PATHINFO_EXTENSION);
             if ($pathinfo === ltrim('.kml', '.') || $pathinfo === ltrim('.kmz', '.')) {
-                $filenames[] = 'KML/' . $forestry->id  . '/' . basename($file);
+                $filenames[] = 'kml-data/' . $forestry->id  . '/' . basename($file);
             }
         }
 
@@ -60,7 +60,6 @@ class HomeController extends Controller
         return Inertia::render('List', [
             'activeAffiliate' => $forestry->affiliate,
             'activeForestry' => $forestry,
-//            'forestry' => $forestry,
             'points' => $points,
             'affiliates' => $affiliates,
             'categories' => $categories
@@ -70,7 +69,7 @@ class HomeController extends Controller
     public function file(Request $request)
     {
         $forestry = $request->get('forestry');
-        $path = 'public/KML/' . $forestry;
+        $path = 'public/kml-data/' . $forestry;
         $files = Storage::files($path);
 
         dump($files);
