@@ -54,8 +54,8 @@
         </template>
         <main class=" overflow-y-auto w-full">
             <div class="container pt-[80px] mx-auto">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 mb-6">
-                    <v-card v-for="point in points" :key="point.id" :point="point"/>
+                <div class="flex flex-wrap basis-1/4 gap-8 px-6 mb-6">
+                    <v-card :scrollable="true" class="shadow-xl max-w-full sm:max-w-[46%] xl:max-w-[23%]" v-for="point in points" :key="point.id" :point="point"/>
                 </div>
             </div>
         </main>

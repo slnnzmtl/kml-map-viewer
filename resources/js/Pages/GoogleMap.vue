@@ -12,47 +12,11 @@
                 </div>                
                 <div class="flex gap-4 w-max">
                     <grid-button v-show="showKmlButton" @onClick="toggleKmlLayer" :isActive="kmlLayerIsActive" :isLoading="kmlLayerIsLoading" />
-                    <multiselect 
-                        v-model="localActiveAffiliate" :can-clear="false" :close-on-deselect="false" 
-                        :canDeselect="false"
-                        :close-on-select="false"
-                        :hide-selected="false"
-                        :options="notEmptyAffiliates" :show-options="true" class="affiliate" mode="single"
-                        value-prop="id"
-                    >
-
-                        <template #multiplelabel="{values}">
-                            <div class="p-2 mr-auto">
-                                Вибрано - {{ values }}
-                            </div>
-                        </template>
-
-                        <template #singlelabel>
-                            <div class="mr-auto p-2">{{ activeAffiliate.title }} - {{ activeForestry.title }}</div>
-                        </template>
-
-                        <template #option="{option:affiliate, isSelected}">
-                            <div class="relative w-full ">
-                                <span>{{ affiliate.title }}</span>
-
-                                <template v-if="isSelected(affiliate)">
-                                    <div class="absolute left-full top-0 bg-white rounded overflow-hidden text-black"
-                                        style="min-width: 200px">
-                                        <ul>
-                                            <li v-for="forestry in affiliate.forestry" :key="forestry.id"
-                                                :class="{'bg-gray-200 pointer-events-none': localActiveForestry === forestry.id, 'pointer-events-none': forestry.id === activeForestry.id}"
-                                                :value="forestry.id"
-                                                class="p-3"
-                                                @click="goToForestry(forestry.id)">
-                                                {{ forestry.title }}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </template>
-                            </div>
-                        </template>
-                    </multiselect>
-                    
+                    <AffiliateForestrySelect
+                        :activeAffiliate="activeAffiliate" 
+                        :activeForestry="activeForestry"
+                        :affiliates="affiliates"
+                    />
                     <div class="min-w-[250px] flex gap-2">
                         <multiselect v-model="selectedCategories" :close-on-select="false" :hide-selected="false"
                                     :options="filteredCategories"
@@ -79,7 +43,7 @@
                                 </div>
                             </template>
                         </multiselect>
-                    </div>
+                    </div> 
                     
                 </div>
             </div>
@@ -120,7 +84,7 @@ import {Menu, MenuItem, MenuItems} from "@headlessui/vue";
 import Multiselect from '@vueform/multiselect'
 import VCard from "@/Components/VCard.vue";
 import GridButton from '@/Components/GridButton.vue';
-
+import AffiliateForestrySelect from '@/Components/AffiliateForestrySelect.vue'
 import("@vueform/multiselect/themes/default.css")
 
 export default {
@@ -137,6 +101,7 @@ export default {
         Head,
         Multiselect,
         GridButton,
+        AffiliateForestrySelect,
     },
     data: function () {
         return {
@@ -152,8 +117,6 @@ export default {
                 center: {lat: 51.09896683851218, lng: 25.667232758549517},
             },
 
-            localActiveAffiliate: null,
-            localActiveForestry: null,
             bounds: null,
             selectedCategories: [],
             isLoaded: false,
@@ -191,17 +154,7 @@ export default {
         filteredCategories() {
             return this.categories.filter(cat => this.points.filter(point => point.category.id === cat.id).length)
         },
-        notEmptyAffiliates() {
-            return this.affiliates.filter(a => a.forestry.filter(f => f.points_count).length)
-                .map(a => ({
-                    ...a,
-                    forestry: a.forestry.filter(f => f.points_count)
-                }))
-        }
-    },
-    beforeMount() {
-        this.localActiveAffiliate = this.activeAffiliate.id
-        this.localActiveForestry = this.activeForestry.id
+        
     },
     mounted() {
         setTimeout(() => {
@@ -267,6 +220,7 @@ export default {
                 const url = import.meta.env.VITE_APP_URL + path
                 const kml = new api.KmlLayer({ url, map })
 
+                console.log(kml)
                 kml.addListener('status_changed', () => {
                     const status = kml.getStatus()
 
@@ -285,10 +239,6 @@ export default {
             })
             this.$refs.map.kmlLayers = layers
         },
-        goToForestry(id) {
-            if (id !== this.activeForestry.id)
-                this.$inertia.get(`/map/${id}`)
-        }
     },
     watch: {
         selectedCategories() {
@@ -311,14 +261,5 @@ export default {
 .google__map {
     width: 100%;
     height: 100vh;
-}
-
-.affiliate .multiselect-dropdown {
-    overflow: initial;
-    max-height: initial;
-}
-
-.multiselect-wrapper {
-    min-width: 250px !important;
 }
 </style>

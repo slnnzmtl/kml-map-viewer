@@ -4,7 +4,7 @@
     </div>
     <div v-if="showPanel"
          :style="panelPositionStyle"
-         class="fixed w-auto max-w-[300px] bg-gray-100 shadow-md rounded" tabindex="0">
+         class="absolute w-auto max-w-[300px] bg-gray-100 shadow-md rounded" tabindex="0">
         <ul class="list-outside hover:list-inside">
             <template v-if="forestry.length">
                 <template v-if="filteredForestry.length">
@@ -83,8 +83,6 @@ export default {
 
                     
                     this.activeAffiliates = this.affiliates.find((af => af.code === id))
-                    console.log(this.activeAffiliates)
-
                     this.showPanel = true
                 })
             })

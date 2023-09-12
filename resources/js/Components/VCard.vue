@@ -1,5 +1,5 @@
 <template>
-    <div class="card-item">
+    <div class="card-item" :class="{ 'scrollable': scrollable }">
         <div class="card-item-img">
             <carousel :itemsToScroll="point.media.length > 1 ? 1 : 0" ref="slider" :autoplay="2000" :mouse-drag="true" :touch-drag="true" :wrap-around="true"
                     @init="$refs.slider.restartCarousel()">
@@ -44,6 +44,7 @@ export default {
     },
     props: {
         point: {},
+        scrollable: false,
     },
     data: () => ({
         expanded: false,
@@ -62,11 +63,14 @@ export default {
 
 .card-item {
     border-radius: 8px;
-    box-shadow: 3px 4px 20px rgba(0, 0, 0, 0.15);
     background: #FFFFFF;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
+    overflow-y: visible;
+}
+
+.card-item.scrollable {
+    overflow-y: scroll;
 }
 
 .card-item-img {
@@ -94,12 +98,10 @@ export default {
 .card-text {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    overflow: hidden;
     flex-grow: 1;
     margin: 0;
     font-size: 16px;
     line-height: 26px;
-    overflow: auto;
     max-height: 410px;
     padding: 0 12px;
 }
