@@ -77,7 +77,7 @@
                                 </form-group>
                                 <form-group>
                                     <GoogleMap ref="map"
-                                               :center="form.geo" api-key="AIzaSyC0_AC0vJLbsCJ8XVkVc_a4JdDSwC0gQkc"
+                                               :center="form.geo" :api-key="googleMapsApiKey"
                                                v-bind="mapOptions"
                                                @click="changeGeo"
                                     >
@@ -200,6 +200,7 @@ const pointTemplate = {
 export default {
     components: {InputFileImagePreview, Marker, FormGroup, GoogleMap, CustomMarker, Head, AuthenticatedLayout},
     data: () => ({
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
         mapOptions: {
             zoom: 11,
             streetViewControl: false,
