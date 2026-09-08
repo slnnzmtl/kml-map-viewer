@@ -35,7 +35,7 @@ export default {
         center: {}
     },
     data: () => ({
-        apiKey: 'AIzaSyC0_AC0vJLbsCJ8XVkVc_a4JdDSwC0gQkc',
+        apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
         bounds: null
     }),
     computed: {
