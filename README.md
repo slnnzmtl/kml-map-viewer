@@ -1,66 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# KML Map Viewer
+
+Interactive regional forestry map for browsing affiliates (філії), forestries (лісництва), and points of interest on Google Maps—with optional KML/KMZ overlays and an authenticated catalog admin.
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="docs/screenshots/product-logo.png" alt="Product logo" width="280" />
 </p>
 
-## About Laravel
+## Status / portfolio decision
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Do not feature this repository as a primary portfolio or Upwork case study.**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+It is a solid domain demo of Laravel + Inertia + Google Maps/KML, but it still has incomplete guest list UX, a filesystem-only KML workflow, unused map dependencies, and limited automated tests. Keep it public as a secondary geospatial sample; leave it unpinned and out of professional emphasis until those gaps are closed.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Customer-specific operational details were already stripped from the public surface (see project history). Seeded geography and Ukrainian UI copy remain as anonymized demo content for a forestry-enterprise style map.
 
-## Learning Laravel
+## Purpose
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Give the public a simple path from a regional overview map → forestry unit → map or list of objects (recreation sites, cameras, tours, and similar points), while admins maintain categories and point data in a small “База даних” dashboard.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Capabilities
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Public guest experience
 
-## Laravel Sponsors
+| Capability | Description |
+|------------|-------------|
+| Regional SVG overview | Clickable affiliate regions; forestries without points are visually disabled |
+| Forestry map view | Google Maps hybrid with category-icon markers and info windows |
+| Category filter | Multi-select filter for categories present on the current forestry |
+| Affiliate / forestry switcher | Jump between forestries that have points |
+| KML / KMZ overlays | Toggle Google `KmlLayer` overlays loaded from per-forestry storage |
+| List view | Card grid of points for a forestry (see [Limitations](#limitations)) |
+| Point detail cards | Title, description, image carousel, optional online camera, 3D tour, and route links |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Admin (authenticated)
 
-### Premium Partners
+| Capability | Description |
+|------------|-------------|
+| Categories | CRUD with icon images (Spatie Media Library) |
+| Points / objects | CRUD with lat/lng or map placement and multi-image upload |
+| Affiliates | Read-only tree of affiliates and forestries |
+| Auth | Laravel Breeze register / login / password reset / profile |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Domain model
 
-## Contributing
+`Affiliate` (SVG region `code`) → `Forestry` → `Point` → `PointCategory`, with media handled via Spatie Media Library.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Screenshots
 
-## Code of Conduct
+Product UI assets live in [`docs/screenshots/`](docs/screenshots/).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Regional overview map** (home page SVG):
 
-## Security Vulnerabilities
+![Regional forestry overview map](docs/screenshots/regional-map.svg)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Supporting UI marks:**
+
+<p>
+  <img src="docs/screenshots/category-icon-example.png" alt="Example category marker icon" width="48" />
+  &nbsp;
+  <img src="docs/screenshots/kml-toggle-icon.svg" alt="KML overlay toggle control" width="48" />
+</p>
+
+Live application screenshots (affiliate popup → map markers → info window → admin forms) should be captured against a local run with a valid `VITE_GOOGLE_MAPS_API_KEY` and sample points/KML files. Until then, the assets above are the shipping visual references.
+
+## Tech stack
+
+- **Backend:** PHP 8.1+, Laravel 10, Inertia.js, Sanctum, Spatie Media Library, Ziggy
+- **Frontend:** Vue 3, Vite 4, Tailwind CSS, `vue3-google-map`, Headless UI, Heroicons, Vueform Multiselect, vue3-carousel
+- **Maps:** Google Maps (primary). Leaflet / Mapbox packages are present in `package.json` but unused in application code.
+
+## Setup
+
+### Requirements
+
+- PHP 8.1+ with Composer
+- Node.js 18+ (npm or yarn)
+- MySQL (or another Laravel-supported database)
+- A browser Google Maps JavaScript API key with Maps and KML-related usage enabled as needed
+
+### Install
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# Configure DB_* and map keys in .env (see below)
+php artisan migrate --seed
+php artisan storage:link
+
+npm install
+npm run dev          # Vite HMR
+# or: npm run build  # production assets
+
+php artisan serve
+```
+
+Open the app URL from `APP_URL` (default `http://localhost:8000`).
+
+### Environment
+
+Minimum map-related settings:
+
+```env
+APP_URL=http://localhost:8000
+VITE_GOOGLE_MAPS_API_KEY=your-browser-maps-key
+VITE_APP_URL="${APP_URL}"
+```
+
+`VITE_APP_URL` is used when building public URLs for KML files served to Google’s `KmlLayer`. Google must be able to fetch those URLs; `localhost` often fails for KML overlays unless you tunnel or deploy a reachable host.
+
+### Seeded login
+
+After `php artisan migrate --seed`:
+
+- **Email:** `admin@admin.com`
+- **Password:** `password`
+
+Affiliate / forestry geography is seeded; point category and image seeders are stubs—create categories and points in the dashboard for a meaningful demo.
+
+### KML files
+
+Place `.kml` / `.kmz` files under:
+
+```text
+storage/app/public/kml-data/{forestry_id}/
+```
+
+After `php artisan storage:link`, they are exposed as `/storage/kml-data/{forestry_id}/...`. There is no in-app KML upload UI.
+
+### Useful routes
+
+| Route | Role |
+|-------|------|
+| `GET /` | Regional overview |
+| `GET /map/{forestry}` | Google map + KML list for a forestry |
+| `GET /list/{forestry}` | Point list for a forestry |
+| `GET /dashboard/categories` | Admin categories (auth) |
+| `GET /dashboard/points` | Admin points (auth) |
+| `GET /dashboard/affiliates` | Admin affiliates tree (auth) |
+
+## Limitations
+
+Honest current boundaries of the product:
+
+- **Not portfolio-ready as a flagship.** Prefer LangGraph / Directus / landing-page flagships for client-facing emphasis.
+- **KML workflow is manual** (filesystem drop only); Google `KmlLayer` needs publicly reachable URLs.
+- **KML click / info-window wiring is incomplete** in the map page (overlay toggle works; interaction polish does not).
+- **Guest list page is incomplete** relative to the map page (switching / multiselect parity issues).
+- **Affiliate / forestry admin is read-only** (create UI is commented out).
+- **Unused frontend map libraries** (Leaflet, Mapbox, jQuery) remain in dependencies.
+- **Legacy image models** coexist with Spatie Media Library.
+- **Automated tests** cover Breeze/auth scaffolding, not map or point flows.
+- **`npm run build`** uses a typo’d Vite mode flag (`devepment`) in `package.json`.
+- Default map center is hard-coded for the Volyn-area demo geography.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT (Laravel application skeleton). Confirm reuse intent before treating demo geography, UI copy, or media as a client deliverable template.
